@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -14,7 +14,7 @@ const RatingPieChart = dynamic(
   { ssr: false }
 );
 
-export default function TeacherDetailPage() {
+function TeacherDetail() {
   const router = useRouter();
   const { id } = useParams();
   const [teacher, setTeacher] = useState<Teacher | null>(null);
@@ -229,5 +229,14 @@ export default function TeacherDetailPage() {
         </section>
       </div>
     </div>
+  );
+}
+
+// Export a page component that wraps the detail view in a Suspense boundary
+export default function TeacherDetailPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+      <TeacherDetail />
+    </Suspense>
   );
 }

@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { getRatings, getTeachers, toggleFavorite } from '@/lib/db';
 import { Rating, Teacher } from '@/lib/types';
 
-export default function MyRatingsPage() {
+function MyRatings() {
   const [ratings, setRatings] = useState<Rating[]>([]);
   const [teachers, setTeachers] = useState<Record<string, Teacher>>({});
   
@@ -153,5 +153,14 @@ export default function MyRatingsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+// Export a page component that wraps the ratings view in a Suspense boundary
+export default function MyRatingsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+      <MyRatings />
+    </Suspense>
   );
 }

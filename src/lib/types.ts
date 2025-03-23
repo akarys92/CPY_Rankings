@@ -3,6 +3,8 @@
 export interface Teacher {
   id: string;
   name: string;
+  studio?: string;
+  style?: string;
 }
 
 export interface Rating {

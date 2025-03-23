@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getTeachers, addRating, addTeacher } from '@/lib/db';
 import { Teacher, CLASS_TYPES, STUDIO_LOCATIONS } from '@/lib/types';
 
-export default function AddRatingPage() {
+// Create a component that uses useSearchParams
+function AddRatingForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialTeacherId = searchParams.get('teacherId');
@@ -454,5 +455,14 @@ export default function AddRatingPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+// Export a page component that wraps the form in a Suspense boundary
+export default function AddRatingPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+      <AddRatingForm />
+    </Suspense>
   );
 }

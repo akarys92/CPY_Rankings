@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getTeachers, getRatingsByTeacher } from '@/lib/db';
 import { Teacher } from '@/lib/types';
 
-export default function TeachersPage() {
+function TeachersList() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -92,5 +92,14 @@ export default function TeachersPage() {
         )}
       </main>
     </div>
+  );
+}
+
+// Export a page component that wraps the teachers list in a Suspense boundary
+export default function TeachersPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+      <TeachersList />
+    </Suspense>
   );
 }
